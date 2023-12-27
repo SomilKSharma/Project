@@ -5,7 +5,7 @@ export const navLinks = [
     id: 0,
     title: "Dashboard",
     icon: <TemplateIcon className="nav-icon" />,
-    goTo: "right"
+    goTo: "/"
   },
   {
     id: 1,

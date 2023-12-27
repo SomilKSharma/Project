@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ProjectContext from '../../context/HotelContext';
 
 const ViewBook = () => {
+  const { allBookings } = useContext(ProjectContext);
   const navigate = useNavigate();
 
   const handleEditClick = (booking) => {
@@ -9,25 +12,15 @@ const ViewBook = () => {
     navigate(`/editBook/${booking.id}`);
   };
 
-  const [book, setBook] = useState([]);
   const [filters, setFilters] = useState({
     room: '',
     startDate: '',
     endDate: '',
   });
 
-  useEffect(() => {
-    bookings();
-  }, []);
-
-  const bookings = async () => {
-    let response = await fetch('http://127.0.0.1:8000/bookings/view/all/');
-    let data = await response.json();
-    setBook(data);
-  };
 
   const filterBookings = () => {
-    const filteredBookings = book.filter((booking) => {
+    const filteredBookings = allBookings.filter((booking) => {
       // Check if the room, start date, and end date match the filter values
       const roomMatch = booking.room.toLowerCase().includes(filters.room.toLowerCase());
       const startDateMatch = booking.start_time.includes(filters.startDate);
@@ -72,7 +65,7 @@ const ViewBook = () => {
                 onClick={() => handleEditClick(booking)}
               >
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {booking.guest_name.toLowerCase()}
+                  {booking.guest_name[0].toUpperCase() + booking.guest_name.slice(1).toLowerCase()}
                 </td>
                 <td className="hidden sm:table-cell px-6 py-4">{booking.guest_email}</td>
                 <td className="px-6 py-4">{booking.room}</td>
